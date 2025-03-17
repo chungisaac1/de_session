@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  server1:
+    build:
+      context: ./server1
+    ports:
+      - "8000:8000"
+  
+    depends_on:
+      - server2
+    networks:
+      - fastapi_network
+
+  server2:
+    build:
+      context: ./server2
+    ports:
+      - "8001:8001"
+   
+    networks:
+      - fastapi_network
+
+networks:
+  fastapi_network:
+    driver: bridge

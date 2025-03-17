@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FastAPI MSA Demo</title>
+</head>
+<body>
+    <h1>FastAPI MSA (Microservices Architecture)</h1>
+
+    <!-- 서버 1의 API 요청 -->
+    <button onclick="fetchUsers()">서버 1: 사용자 정보 요청</button>
+    <p id="server1_response">서버 1 응답: </p>
+
+    <!-- 서버 2의 API 요청 -->
+    <button onclick="fetchOrders()">서버 2: 주문 정보 요청</button>
+    <p id="server2_response">서버 2 응답: </p>
+
+    <script>
+        async function fetchUsers() {
+            try {
+                const response = await fetch("http://localhost:8000/users"); // 서버 1 호출
+                if (!response.ok) throw new Error(`서버 1 응답 오류: ${response.status}`);
+                const data = await response.json();
+                console.log("서버 1 응답 데이터:", data);
+                document.getElementById("server1_response").innerText = "서버 1 응답: " + JSON.stringify(data.users);
+            } catch (error) {
+                console.error("서버 1 호출 오류:", error);
+                document.getElementById("server1_response").innerText = "서버 1 호출 오류: " + error.message;
+            }
+        }
+
+        async function fetchOrders() {
+            try {
+                const response = await fetch("http://localhost:8000/get-orders"); // 서버 2 호출
+                if (!response.ok) throw new Error(`서버 2 응답 오류: ${response.status}`);
+                const data = await response.json();
+                console.log("서버 2 응답 데이터:", data);
+                document.getElementById("server2_response").innerText = "서버 2 응답: " + JSON.stringify(data.orders);
+            } catch (error) {
+                console.error("서버 2 호출 오류:", error);
+                document.getElementById("server2_response").innerText = "서버 2 호출 오류: " + error.message;
+            }
+        }
+
+    
+    </script>
+</body>
+</html>
